@@ -1,7 +1,7 @@
 {
-  "name": "28-Stu_Mini-Project",
+  "name": "nosql-network-api",
   "version": "1.0.1",
-  "description": "Mongoose back-end project - Develop",
+  "description": "Mongoose back-end project",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -15,6 +15,7 @@
     "mongoose": "^6.9.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "prettier": "2.8.4"
   }
 }
