@@ -1,11 +1,11 @@
-const connection = require('../config/connection');
-const { User, Thought } = require('../models');
-const { getRandomUsername, getRandomThought } = require('./data');
+const connection = require("../config/connection");
+const { User, Thought, reactionSchema } = require("../models");
+const { getRandomUsername, getMessages, getReaction } = require("./data");
 
-connection.on('error', (err) => err);
+connection.on("error", (err) => err);
 
-connection.once('open', async () => {
-  console.log('connected');
+connection.once("open", async () => {
+  console.log("connected");
 
   // Drop existing users
   await User.deleteMany({});
@@ -13,15 +13,16 @@ connection.once('open', async () => {
   // Drop existing thoughts
   await Thought.deleteMany({});
 
-  // Create empty array to hold the users
+  // Create empty array to hold the users and thoughts
   const users = [];
+  const thoughts = [];
 
-  // Loop 20 times -- add users to the uers array
+  // Loop 20 times -- add users to the users array
   for (let i = 0; i < 20; i++) {
     const username = getRandomUsername();
     const email = `${username}@gmail.com`;
-    const thoughts = Math.floor(Math.random() * 20);
-    const friends = Math.floor(Math.random() * 20);
+    const thoughts = [];
+    const friends = [];
 
     users.push({
       username,
@@ -29,22 +30,61 @@ connection.once('open', async () => {
       thoughts,
       friends,
     });
-  };
-
-  // Need to finish making the seed data
+  }
 
   // Add users to the collection and await the results
   await User.collection.insertMany(users);
 
-  // Add thoughts to the collection and await the results
-  await Course.collection.insertOne({
-    courseName: 'UCLA',
-    inPerson: false,
-    students: [...students],
-  });
+  // Add thoughts to thoughts array
+  const messages = getMessages();
+  for (let i = 0; i < 20; i++) {
+    // Get a random user
+    let result = await User.aggregate([{ $sample: { size: 1 } }]);
+    const user = result[0];
+    // console.log(user);
 
-  // Log out the seed data to indicate what should appear in the database
-  console.table(students);
-  console.info('Seeding complete! 🌱');
+    // Create thought fields values
+    const thoughtText = messages[i];
+    const username = user.username;
+
+    // Create reaction fields values
+    const reactionBody = getReaction();
+    result = await User.aggregate([
+      { $match: { _id: { $ne: user._id } } },
+      { $sample: { size: 1 } },
+    ]);
+    const reactionUsername = result[0];
+    const reactions = [
+      { reactionBody: reactionBody, username: reactionUsername.username },
+    ];
+    // console.log(reactions);
+
+    // Insert new Thought
+    const thought = {
+      thoughtText,
+      username,
+      reactions,
+    };
+    const newThought = await Thought.collection
+      .insertOne(thought)
+      .catch((err) => {
+        console.log(err);
+      });
+    // console.log(newThought.insertedId);
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $push: {
+          thoughts: [newThought.insertedId],
+          friends: [reactionUsername._id],
+
+        },
+      },
+      { new: true }
+    );
+    console.log(updatedUser);
+  }
+
   process.exit(0);
 });
