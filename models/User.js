@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const Thought = require('./Thought');
+const { Schema, model } = require("mongoose");
+const Thought = require("./Thought");
 
 // Schema for User model
 const userSchema = new Schema(
@@ -16,8 +16,8 @@ const userSchema = new Schema(
       required: true,
       match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid Email Address"], // dunno if this works yet
     },
-    thoughts: [{ type: Schema.Types.ObjectId, ref: 'Thought' }],
-    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   {
     virtuals: {
@@ -27,8 +27,12 @@ const userSchema = new Schema(
         },
       },
     },
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
   }
 );
 
-const User = model('user', userSchema);
+const User = model("User", userSchema);
 module.exports = User;
