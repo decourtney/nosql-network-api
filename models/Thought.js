@@ -32,8 +32,12 @@ const thoughtSchema = new Schema(
         },
       },
     },
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
   }
 );
 
-const Thought = model("thought", thoughtSchema);
+const Thought = model("Thought", thoughtSchema);
 module.exports = Thought;
