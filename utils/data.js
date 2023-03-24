@@ -1,4 +1,4 @@
-const first = [
+const nameArr = [
   "Aaran",
   "Aaren",
   "Aarez",
@@ -36,9 +36,6 @@ const first = [
   "Zendel",
   "Zenith",
   "Zennon",
-];
-
-const second = [
   "Zeph",
   "Zerah",
   "Zhen",
@@ -114,21 +111,24 @@ const reactions = [
   "💩",
 ];
 
-// Get a random item given an array
-const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// Gets a random username
+const getRandomUniqueName = () => {
+  let tmpNames = nameArr;
+  return (
+    tmpNames.pop(Math.floor(Math.random() * tmpNames.length)) +
+    tmpNames.pop(Math.floor(Math.random() * tmpNames.length))
+  );
+};
 
-// Gets a random full name
-const getRandomUsername = () =>
-  `${getRandomArrItem(first)}${getRandomArrItem(second)}`;
-
-// Function to generate random assignments that we can add to student object.
+// Gets array of messages
 const getMessages = () => {
   return messages;
 };
 
+// Gets a random reaction
 const getReaction = () => {
-  return getRandomArrItem(reactions);
+  return reactions[Math.floor(Math.random() * reactions.length)];
 };
 
 // Export the functions for use in seed.js
-module.exports = { getRandomUsername, getMessages, getReaction };
+module.exports = { getRandomUniqueName, getMessages, getReaction };
