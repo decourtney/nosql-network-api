@@ -26,7 +26,7 @@ module.exports = {
   },
 
   updateUser(req, res) {
-    User.findByIdAndUpdate(req.params.userId, { ...req.body })
+    User.findByIdAndUpdate(req.params.userId, { ...req.body }, { new: true })
       .then((user) => {
         !user
           ? res.status(404).json({ message: "No username with that ID" })
