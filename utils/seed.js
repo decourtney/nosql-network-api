@@ -1,6 +1,6 @@
 const connection = require("../config/connection");
 const { User, Thought } = require("../models");
-const { getRandomUniqueName, getMessages, getReaction } = require("./data");
+const { getArrayOfNames, getMessages, getReaction } = require("./data");
 
 connection.on("error", (err) => err);
 
@@ -15,11 +15,13 @@ connection.once("open", async () => {
 
   // Create empty array to hold the users and thoughts
   const users = [];
-  const thoughts = [];
 
   // Loop 20 times -- add users to the users array
+  let arrayOfNames = getArrayOfNames();
   for (let i = 0; i < 20; i++) {
-    const username = getRandomUniqueName();
+    const username =
+      arrayOfNames.pop(Math.floor(Math.random() * arrayOfNames.length)) +
+      arrayOfNames.pop(Math.floor(Math.random() * arrayOfNames.length));
     const email = `${username}@gmail.com`;
     const thoughts = [];
     const friends = [];

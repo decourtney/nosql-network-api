@@ -112,12 +112,8 @@ const reactions = [
 ];
 
 // Gets a random username
-const getRandomUniqueName = () => {
-  let tmpNames = nameArr;
-  return (
-    tmpNames.pop(Math.floor(Math.random() * tmpNames.length)) +
-    tmpNames.pop(Math.floor(Math.random() * tmpNames.length))
-  );
+const getArrayOfNames = () => {
+  return nameArr;
 };
 
 // Gets array of messages
@@ -131,4 +127,4 @@ const getReaction = () => {
 };
 
 // Export the functions for use in seed.js
-module.exports = { getRandomUniqueName, getMessages, getReaction };
+module.exports = { getArrayOfNames, getMessages, getReaction };
