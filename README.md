@@ -18,7 +18,7 @@ This is a project that uses MongoDB, Mongoose ODM, and Express.js to build a sim
 
 Deployed Project: **not deployed**
 
-Walkthrough Video: [https://youtu.be/lANkbTdBZvQ](https://youtu.be/lANkbTdBZvQ)
+Walkthrough Video: [https://youtu.be/ktY9KZpH5u8](https://youtu.be/ktY9KZpH5u8)
 
 Utilizing:
    
